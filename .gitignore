@@ -1,0 +1,11 @@
+# Compiled Java classes
+src/main/webapp/WEB-INF/classes/
+bin/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# VS Code files
+.vscode/
+*.log
