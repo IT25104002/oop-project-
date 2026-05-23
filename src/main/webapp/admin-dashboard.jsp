@@ -16,6 +16,7 @@
     double totalRevenue = 0.0;
     int feedbackCount = 0;
     int totalClassesScheduled = 0; // Added for timetable tracking
+    int totalAdmins = 0;
 
     String baseDir = application.getRealPath("/");
     File dataDir = new File(baseDir + "webappdata");
@@ -67,6 +68,17 @@
             while (br.readLine() != null) totalClassesScheduled++;
         } catch (Exception e) {}
     }
+
+    // 5. Calculate Administrative User Accounts Count
+    File adminsFile = new File(dataDir, "admins.txt");
+    if (adminsFile.exists()) {
+        try (BufferedReader br = new BufferedReader(new FileReader(adminsFile))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (!line.trim().isEmpty()) totalAdmins++;
+            }
+        } catch (Exception e) {}
+    }
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -110,6 +122,7 @@
         .metric-card.success { border-left-color: #4caf50; }
         .metric-card.info { border-left-color: #00bcd4; }
         .metric-card.purple { border-left-color: #9c27b0; }
+        .metric-card.admin { border-left-color: var(--brand-orange); }
         
         .metric-info h3 { margin: 0; font-size: 0.75rem; color: var(--text-gray); text-transform: uppercase; letter-spacing: 1px; }
         .metric-info p { margin: 5px 0 0 0; font-family: 'Oswald', sans-serif; font-size: 1.8rem; font-weight: bold; }
@@ -118,6 +131,7 @@
         .metric-card.success .metric-icon { color: rgba(76,175,80,0.2); }
         .metric-card.info .metric-icon { color: rgba(0,188,212,0.2); }
         .metric-card.purple .metric-icon { color: rgba(156, 39, 176, 0.2); }
+        .metric-card.admin .metric-icon { color: rgba(255, 87, 34, 0.22); }
 
         /* Console Matrix Navigation Links */
         .controls-title { font-family: 'Oswald', sans-serif; font-size: 1.4rem; letter-spacing: 1px; margin-bottom: 20px; text-transform: uppercase; border-bottom: 1px solid #222; padding-bottom: 10px; }
@@ -180,6 +194,14 @@
                 </div>
                 <div class="metric-icon"><i class="fas fa-calendar-alt"></i></div>
             </div>
+
+            <div class="metric-card admin">
+                <div class="metric-info">
+                    <h3>Admin Accounts</h3>
+                    <p><%= totalAdmins %> Users</p>
+                </div>
+                <div class="metric-icon"><i class="fas fa-user-shield"></i></div>
+            </div>
         </div>
 
         <div class="controls-title">Operations Console Matrix</div>
@@ -212,6 +234,12 @@
                 <i class="fas fa-comments"></i>
                 <h4>Athlete Feedback</h4>
                 <p>Monitor customer remarks, system star ratings, and custom feedback indices.</p>
+            </a>
+
+            <a href="admin-management.jsp" class="control-box">
+                <i class="fas fa-user-shield"></i>
+                <h4>Admin Management</h4>
+                <p>Add new admins, update staff access levels, disable accounts, and remove old administrator records.</p>
             </a>
             
             <a href="Dashboard.jsp" class="control-box" style="border-color: #333; grid-column: 1 / -1;">
