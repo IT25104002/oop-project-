@@ -1,0 +1,7 @@
+# Fitness Member Profile System member records
+# This file is saved in readable English text. Fields are separated by TAB characters.
+# Passwords are stored in readable English/plain text for this coursework demonstration.
+# Fields: memberId	fullName	email	password	role	phone	dob	gender	address	profilePicture	height	weight	fitnessGoal	emergencyContact	membershipPlan	joinDate	expiryDate	paymentStatus	status
+A001	Fitness Admin	admin@fitpro.com	admin123	ADMIN	+94770000000	1995-01-01	Male	Colombo, Sri Lanka		175.0	70.0	System Management	+94771111111	Staff	2024-01-01	2030-01-01	Paid	Active
+M001	Ahamed M. R. A.	ahamed@fitpro.com	member123	MEMBER	+94771234567	2002-05-15	Male	Malabe, Sri Lanka		172.0	68.0	Muscle Gain	+94779876543	Premium Monthly	2026-03-12	2026-06-12	Paid	Active
+M002	Nimal Perera	nimal@fitpro.com	member123	MEMBER	+94775556666	1998-08-22	Male	Kandy, Sri Lanka		169.0	74.0	Weight Loss	+94774443333	Quarterly	2025-12-12	2026-05-07	Pending	Expired
