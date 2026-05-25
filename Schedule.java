@@ -7,7 +7,7 @@ public class Schedule {
         this.memberId = memberId; this.trainer = trainer; this.classType = classType;
         this.timeSlot = timeSlot; this.status = status; this.date = date;
     }
-
+//getes
     public String getMemberId() { return memberId; }
     public String getTrainer() { return trainer; }
     public String getClassType() { return classType; }
