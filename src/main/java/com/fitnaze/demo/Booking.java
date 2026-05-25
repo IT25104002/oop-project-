@@ -13,7 +13,6 @@ public class Booking {
         this.availableSlots = availableSlots;
     }
 
-    //ddd
     public String getMemberId() { return memberId; }
     public String getTrainerName() { return trainerName; }
     public String getClassType() { return classType; }
