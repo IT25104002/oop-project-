@@ -108,7 +108,7 @@
         }
     }
 
-    // 5. TRANSACTION ENGINE: Handle Forms (Book and Cancel Actions)
+    // 5. TRANSACTION ENGINE: Handle Forms 
     String reqAction = request.getParameter("action");
     String jsRedirectStatus = null;
 
