@@ -58,42 +58,68 @@ public class DietPlan implements Serializable {
     // ==========================================================
     // GETTERS & SETTERS (Perfect JavaBeans Specification)
     // ==========================================================
-    public String getPlanId() { return planId; }
-    public void setPlanId(String planId) { this.planId = planId; }
+    public String getPlanId() {
+        return planId; }
+    public void setPlanId(String planId) {
+        this.planId = planId; }
 
-    public String getMemberId() { return memberId; }
-    public void setMemberId(String memberId) { this.memberId = memberId; }
+    public String getMemberId() {
+        return memberId; }
+    public void setMemberId(String memberId) {
+        this.memberId = memberId; }
 
-    public String getMemberName() { return memberName; }
-    public void setMemberName(String memberName) { this.memberName = memberName; }
+    public String getMemberName() {
+        return memberName; }
+    public void setMemberName(String memberName) {
+        this.memberName = memberName; }
 
-    public String getDietType() { return dietType; }
-    public void setDietType(String dietType) { this.dietType = dietType; }
+    public String getDietType() {
+        return dietType; }
+    public void setDietType(String dietType) {
+        this.dietType = dietType; }
 
-    public String getFitnessGoal() { return fitnessGoal; }
-    public void setFitnessGoal(String fitnessGoal) { this.fitnessGoal = fitnessGoal; }
+    public String getFitnessGoal() {
+        return fitnessGoal; }
+    public void setFitnessGoal(String fitnessGoal) {
+        this.fitnessGoal = fitnessGoal; }
 
-    public String getMedicalCondition() { return medicalCondition; }
-    public void setMedicalCondition(String medicalCondition) { this.medicalCondition = medicalCondition; }
+    public String getMedicalCondition() {
+        return medicalCondition; }
+    public void setMedicalCondition(String medicalCondition) {
+        this.medicalCondition = medicalCondition; }
 
-    public String getPlanDetails() { return planDetails; }
-    public void setPlanDetails(String planDetails) { this.planDetails = planDetails; }
+    public String getPlanDetails() {
+        return planDetails; }
+    public void setPlanDetails(String planDetails) {
+        this.planDetails = planDetails; }
 
-    public double getWaterIntake() { return waterIntake; }
-    public void setWaterIntake(double waterIntake) { this.waterIntake = waterIntake; }
+    public double getWaterIntake() {
+        return waterIntake; }
+    public void setWaterIntake(double waterIntake) {
+        this.waterIntake = waterIntake; }
 
-    public String getCreatedDate() { return createdDate; }
-    public void setCreatedDate(String createdDate) { this.createdDate = createdDate; }
+    public String getCreatedDate() {
+        return createdDate; }
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate; }
 
-    public int getCalories() { return calories; }
-    public void setCalories(int calories) { this.calories = calories; }
+    public int getCalories() {
+        return calories; }
+    public void setCalories(int calories) {
+        this.calories = calories; }
 
-    public int getProtein() { return protein; }
-    public void setProtein(int protein) { this.protein = protein; }
+    public int getProtein() {
+        return protein; }
+    public void setProtein(int protein) {
+        this.protein = protein; }
 
-    public int getCarbs() { return carbs; }
-    public void setCarbs(int carbs) { this.carbs = carbs; }
+    public int getCarbs() {
+        return carbs; }
+    public void setCarbs(int carbs) {
+        this.carbs = carbs; }
 
-    public int getFats() { return fats; }
-    public void setFats(int fats) { this.fats = fats; }
+    public int getFats() {
+        return fats; }
+    public void setFats(int fats) {
+        this.fats = fats; }
 }

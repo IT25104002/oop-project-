@@ -89,6 +89,7 @@ header {
     align-items: center;
     border-bottom: 2px solid var(--brand-orange);
 }
+
 .logo { font-size: 1.5rem; font-weight: bold; text-decoration: none; color: white; text-transform: uppercase; }
 .logo span { color: var(--brand-orange); }
 
