@@ -1,0 +1,29 @@
+# Maven build output
+target/
+**/target/
+
+# Compiled Java output
+*.class
+bin/
+out/
+src/main/webapp/WEB-INF/classes/
+
+# Packaged build artifacts
+*.war
+*.war.original
+*.ear
+
+# IDE and editor files
+.classpath
+.project
+.settings/
+.idea/
+.vscode/
+*.iml
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db

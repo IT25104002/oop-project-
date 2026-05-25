@@ -1,0 +1,381 @@
+
+<h2 class="sr-only">Fitness Centre User Management System — full CRUD interface for managing gym members</h2>
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+  .app { padding: 1.5rem 0; }
+  .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 12px; }
+  .header-left { display: flex; align-items: center; gap: 12px; }
+  .logo { width: 40px; height: 40px; border-radius: var(--border-radius-md); background: #1D9E75; display: flex; align-items: center; justify-content: center; }
+  .logo i { font-size: 22px; color: #fff; }
+  .title { font-size: 20px; font-weight: 500; color: var(--color-text-primary); }
+  .subtitle { font-size: 13px; color: var(--color-text-secondary); }
+  .btn-add { background: #1D9E75; color: #fff; border: none; border-radius: var(--border-radius-md); padding: 8px 16px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background 0.15s; }
+  .btn-add:hover { background: #0F6E56; }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
+  .stat-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 14px 16px; }
+  .stat-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
+  .stat-val { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
+  .stat-val.green { color: #1D9E75; }
+  .stat-val.amber { color: #BA7517; }
+  .stat-val.blue { color: #185FA5; }
+  .controls { display: flex; gap: 10px; margin-bottom: 1rem; flex-wrap: wrap; }
+  .search-wrap { flex: 1; min-width: 180px; position: relative; }
+  .search-wrap i { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 16px; color: var(--color-text-secondary); }
+  .search-wrap input { width: 100%; padding-left: 34px; }
+  select { border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); padding: 0 12px; height: 36px; font-size: 14px; cursor: pointer; }
+  .table-wrap { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { background: var(--color-background-secondary); color: var(--color-text-secondary); font-weight: 500; font-size: 12px; text-align: left; padding: 10px 14px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  td { padding: 11px 14px; border-bottom: 0.5px solid var(--color-border-tertiary); color: var(--color-text-primary); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--color-background-secondary); }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; flex-shrink: 0; }
+  .member-cell { display: flex; align-items: center; gap: 10px; }
+  .member-info .name { font-weight: 500; font-size: 14px; }
+  .member-info .email { font-size: 12px; color: var(--color-text-secondary); }
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 999px; font-size: 12px; font-weight: 500; }
+  .badge.active { background: #E1F5EE; color: #0F6E56; }
+  .badge.inactive { background: #F1EFE8; color: #5F5E5A; }
+  .badge.pending { background: #FAEEDA; color: #854F0B; }
+  .plan-badge { display: inline-block; padding: 2px 8px; border-radius: var(--border-radius-md); font-size: 12px; font-weight: 500; }
+  .plan-badge.basic { background: #E6F1FB; color: #185FA5; }
+  .plan-badge.premium { background: #EEEDFE; color: #534AB7; }
+  .plan-badge.vip { background: #FAEEDA; color: #854F0B; }
+  .action-btns { display: flex; gap: 6px; }
+  .btn-icon { background: none; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--color-text-secondary); transition: all 0.15s; }
+  .btn-icon:hover { background: var(--color-background-secondary); color: var(--color-text-primary); }
+  .btn-icon.danger:hover { background: #FCEBEB; color: #A32D2D; border-color: #F09595; }
+  .empty-state { text-align: center; padding: 3rem 1rem; color: var(--color-text-secondary); }
+  .empty-state i { font-size: 36px; margin-bottom: 12px; display: block; }
+
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 1rem; }
+  .modal { background: var(--color-background-primary); border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem 0; }
+  .modal-header h3 { font-size: 16px; font-weight: 500; }
+  .modal-body { padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 14px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group label { font-size: 12px; color: var(--color-text-secondary); font-weight: 500; }
+  .form-group input, .form-group select { width: 100%; }
+  .modal-footer { padding: 0 1.5rem 1.25rem; display: flex; justify-content: flex-end; gap: 10px; }
+  .btn-cancel { background: none; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 8px 16px; font-size: 14px; cursor: pointer; color: var(--color-text-primary); }
+  .btn-save { background: #1D9E75; color: #fff; border: none; border-radius: var(--border-radius-md); padding: 8px 18px; font-size: 14px; font-weight: 500; cursor: pointer; }
+  .btn-save:hover { background: #0F6E56; }
+  .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 12px 16px; font-size: 14px; display: flex; align-items: center; gap: 8px; z-index: 200; box-shadow: none; animation: slideIn 0.2s ease; }
+  .toast.success { border-color: #5DCAA5; color: #0F6E56; }
+  .toast.danger { border-color: #F09595; color: #A32D2D; }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .confirm-modal { background: var(--color-background-primary); border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); width: 100%; max-width: 340px; padding: 1.5rem; }
+  .confirm-modal h3 { font-size: 16px; font-weight: 500; margin-bottom: 8px; }
+  .confirm-modal p { font-size: 14px; color: var(--color-text-secondary); margin-bottom: 1.25rem; }
+  .btn-delete-confirm { background: #A32D2D; color: #fff; border: none; border-radius: var(--border-radius-md); padding: 8px 16px; font-size: 14px; font-weight: 500; cursor: pointer; }
+  .pagination { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-top: 0.5px solid var(--color-border-tertiary); font-size: 13px; color: var(--color-text-secondary); }
+  .page-btns { display: flex; gap: 4px; }
+  .page-btn { background: none; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 13px; color: var(--color-text-primary); }
+  .page-btn.active { background: #1D9E75; color: #fff; border-color: #1D9E75; }
+  .page-btn:disabled { opacity: 0.4; cursor: default; }
+</style>
+
+<div class="app">
+  <div class="header">
+    <div class="header-left">
+      <div class="logo"><i class="ti ti-barbell" aria-hidden="true"></i></div>
+      <div>
+        <div class="title">FitCore CMS</div>
+        <div class="subtitle">Member management</div>
+      </div>
+    </div>
+    <button class="btn-add" onclick="openAdd()"><i class="ti ti-plus" aria-hidden="true"></i> Add member</button>
+  </div>
+
+  <div class="stats-grid" id="stats"></div>
+
+  <div class="controls">
+    <div class="search-wrap">
+      <i class="ti ti-search" aria-hidden="true"></i>
+      <input type="text" id="search" placeholder="Search members..." oninput="render()" />
+    </div>
+    <select id="filterStatus" onchange="render()">
+      <option value="">All status</option>
+      <option value="Active">Active</option>
+      <option value="Inactive">Inactive</option>
+      <option value="Pending">Pending</option>
+    </select>
+    <select id="filterPlan" onchange="render()">
+      <option value="">All plans</option>
+      <option value="Basic">Basic</option>
+      <option value="Premium">Premium</option>
+      <option value="VIP">VIP</option>
+    </select>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Member</th>
+          <th>Plan</th>
+          <th>Status</th>
+          <th>Joined</th>
+          <th>Phone</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="pagination" id="pagination"></div>
+  </div>
+</div>
+
+<div id="modal-container"></div>
+<div id="toast-container"></div>
+
+<script>
+const COLORS = ['#1D9E75','#534AB7','#BA7517','#185FA5','#D85A30','#993556','#3B6D11','#A32D2D'];
+function getColor(str) {
+  let h = 0; for (let c of str) h = (h * 31 + c.charCodeAt(0)) % COLORS.length;
+  return COLORS[h];
+}
+function initials(name) { return name.split(' ').slice(0,2).map(n=>n[0]).join('').toUpperCase(); }
+
+let members = [
+  {id:1, name:'Aisha Fernando', email:'aisha@gmail.com', phone:'+94 77 123 4567', plan:'Premium', status:'Active', joined:'2024-01-15', gender:'Female', age:28, notes:'Morning sessions preferred'},
+  {id:2, name:'Kamal Perera', email:'kamal@yahoo.com', phone:'+94 71 234 5678', plan:'Basic', status:'Active', joined:'2024-02-20', gender:'Male', age:35, notes:''},
+  {id:3, name:'Nisha Silva', email:'nisha@gmail.com', phone:'+94 76 345 6789', plan:'VIP', status:'Active', joined:'2023-11-05', gender:'Female', age:31, notes:'Personal trainer assigned'},
+  {id:4, name:'Roshan Bandara', email:'roshan@gmail.com', phone:'+94 72 456 7890', plan:'Basic', status:'Inactive', joined:'2023-09-12', gender:'Male', age:42, notes:''},
+  {id:5, name:'Dilini Wickrama', email:'dilini@hotmail.com', phone:'+94 75 567 8901', plan:'Premium', status:'Pending', joined:'2024-05-01', gender:'Female', age:26, notes:'New member orientation pending'},
+  {id:6, name:'Tharaka Jayasena', email:'tharaka@gmail.com', phone:'+94 70 678 9012', plan:'VIP', status:'Active', joined:'2023-07-18', gender:'Male', age:38, notes:''},
+  {id:7, name:'Madhavi Rathnayake', email:'madhavi@gmail.com', phone:'+94 77 789 0123', plan:'Basic', status:'Active', joined:'2024-03-08', gender:'Female', age:24, notes:''},
+  {id:8, name:'Nuwan Seneviratne', email:'nuwan@yahoo.com', phone:'+94 71 890 1234', plan:'Premium', status:'Inactive', joined:'2023-12-22', gender:'Male', age:45, notes:''},
+  {id:9, name:'Sachini Gunawardena', email:'sachini@gmail.com', phone:'+94 76 901 2345', plan:'Basic', status:'Active', joined:'2024-04-10', gender:'Female', age:30, notes:''},
+  {id:10, name:'Lakshan Mendis', email:'lakshan@gmail.com', phone:'+94 72 012 3456', plan:'VIP', status:'Pending', joined:'2024-05-05', gender:'Male', age:33, notes:''}
+];
+let nextId = 11;
+let page = 1;
+const PER_PAGE = 6;
+let editingId = null;
+
+function filtered() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const fs = document.getElementById('filterStatus').value;
+  const fp = document.getElementById('filterPlan').value;
+  return members.filter(m =>
+    (!q || m.name.toLowerCase().includes(q) || m.email.toLowerCase().includes(q) || m.phone.includes(q)) &&
+    (!fs || m.status === fs) &&
+    (!fp || m.plan === fp)
+  );
+}
+
+function renderStats() {
+  const total = members.length;
+  const active = members.filter(m=>m.status==='Active').length;
+  const vip = members.filter(m=>m.plan==='VIP').length;
+  const pending = members.filter(m=>m.status==='Pending').length;
+  document.getElementById('stats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Total members</div><div class="stat-val">${total}</div></div>
+    <div class="stat-card"><div class="stat-label">Active</div><div class="stat-val green">${active}</div></div>
+    <div class="stat-card"><div class="stat-label">VIP members</div><div class="stat-val amber">${vip}</div></div>
+    <div class="stat-card"><div class="stat-label">Pending</div><div class="stat-val blue">${pending}</div></div>
+  `;
+}
+
+function render() {
+  const data = filtered();
+  const totalPages = Math.max(1, Math.ceil(data.length / PER_PAGE));
+  if (page > totalPages) page = totalPages;
+  const slice = data.slice((page-1)*PER_PAGE, page*PER_PAGE);
+  const tbody = document.getElementById('tbody');
+  if (!slice.length) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="ti ti-users" aria-hidden="true"></i><div>No members found</div></div></td></tr>`;
+  } else {
+    tbody.innerHTML = slice.map(m => {
+      const col = getColor(m.name);
+      const planClass = m.plan.toLowerCase();
+      const statusClass = m.status.toLowerCase();
+      return `<tr>
+        <td><div class="member-cell">
+          <div class="avatar" style="background:${col}22;color:${col}">${initials(m.name)}</div>
+          <div class="member-info"><div class="name">${m.name}</div><div class="email">${m.email}</div></div>
+        </div></td>
+        <td><span class="plan-badge ${planClass}">${m.plan}</span></td>
+        <td><span class="badge ${statusClass}">${m.status}</span></td>
+        <td>${m.joined}</td>
+        <td>${m.phone}</td>
+        <td><div class="action-btns">
+          <button class="btn-icon" onclick="viewMember(${m.id})" title="View"><i class="ti ti-eye" aria-hidden="true"></i></button>
+          <button class="btn-icon" onclick="openEdit(${m.id})" title="Edit"><i class="ti ti-edit" aria-hidden="true"></i></button>
+          <button class="btn-icon danger" onclick="confirmDelete(${m.id})" title="Delete"><i class="ti ti-trash" aria-hidden="true"></i></button>
+        </div></td>
+      </tr>`;
+    }).join('');
+  }
+  const pag = document.getElementById('pagination');
+  const start = data.length ? (page-1)*PER_PAGE+1 : 0;
+  const end = Math.min(page*PER_PAGE, data.length);
+  let pagesBtns = '';
+  for (let i=1;i<=totalPages;i++) pagesBtns += `<button class="page-btn${i===page?' active':''}" onclick="goPage(${i})">${i}</button>`;
+  pag.innerHTML = `<span>Showing ${start}–${end} of ${data.length}</span><div class="page-btns">${pagesBtns}</div>`;
+  renderStats();
+}
+
+function goPage(p) { page = p; render(); }
+
+function showToast(msg, type='success') {
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = `<i class="ti ti-${type==='success'?'check':'alert-circle'}" aria-hidden="true"></i>${msg}`;
+  document.getElementById('toast-container').appendChild(t);
+  setTimeout(()=>t.remove(), 2800);
+}
+
+function closeModal() { document.getElementById('modal-container').innerHTML = ''; editingId = null; }
+
+function formHTML(m={}) {
+  return `
+    <div class="form-row">
+      <div class="form-group"><label>Full name</label><input id="f-name" type="text" value="${m.name||''}" placeholder="e.g. Aisha Fernando" /></div>
+      <div class="form-group"><label>Email</label><input id="f-email" type="email" value="${m.email||''}" placeholder="email@example.com" /></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Phone</label><input id="f-phone" type="text" value="${m.phone||''}" placeholder="+94 77 xxx xxxx" /></div>
+      <div class="form-group"><label>Age</label><input id="f-age" type="number" value="${m.age||''}" placeholder="25" min="10" max="100" /></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Gender</label>
+        <select id="f-gender">
+          <option ${m.gender==='Male'?'selected':''}>Male</option>
+          <option ${m.gender==='Female'?'selected':''}>Female</option>
+          <option ${m.gender==='Other'?'selected':''}>Other</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Membership plan</label>
+        <select id="f-plan">
+          <option ${m.plan==='Basic'?'selected':''}>Basic</option>
+          <option ${m.plan==='Premium'?'selected':''}>Premium</option>
+          <option ${m.plan==='VIP'?'selected':''}>VIP</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Status</label>
+        <select id="f-status">
+          <option ${m.status==='Active'?'selected':''}>Active</option>
+          <option ${m.status==='Inactive'?'selected':''}>Inactive</option>
+          <option ${m.status==='Pending'?'selected':''}>Pending</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Join date</label><input id="f-joined" type="date" value="${m.joined||new Date().toISOString().split('T')[0]}" /></div>
+    </div>
+    <div class="form-group"><label>Notes</label><input id="f-notes" type="text" value="${m.notes||''}" placeholder="Optional notes..." /></div>
+  `;
+}
+
+function openAdd() {
+  editingId = null;
+  document.getElementById('modal-container').innerHTML = `
+    <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+      <div class="modal">
+        <div class="modal-header"><h3>Add new member</h3><button class="btn-icon" onclick="closeModal()"><i class="ti ti-x" aria-hidden="true"></i></button></div>
+        <div class="modal-body">${formHTML()}</div>
+        <div class="modal-footer"><button class="btn-cancel" onclick="closeModal()">Cancel</button><button class="btn-save" onclick="saveMember()">Add member</button></div>
+      </div>
+    </div>`;
+}
+
+function openEdit(id) {
+  const m = members.find(x=>x.id===id);
+  editingId = id;
+  document.getElementById('modal-container').innerHTML = `
+    <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+      <div class="modal">
+        <div class="modal-header"><h3>Edit member</h3><button class="btn-icon" onclick="closeModal()"><i class="ti ti-x" aria-hidden="true"></i></button></div>
+        <div class="modal-body">${formHTML(m)}</div>
+        <div class="modal-footer"><button class="btn-cancel" onclick="closeModal()">Cancel</button><button class="btn-save" onclick="saveMember()">Save changes</button></div>
+      </div>
+    </div>`;
+}
+
+function saveMember() {
+  const name = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  if (!name || !email) { showToast('Name and email are required', 'danger'); return; }
+  const data = {
+    name, email,
+    phone: document.getElementById('f-phone').value.trim(),
+    age: parseInt(document.getElementById('f-age').value)||0,
+    gender: document.getElementById('f-gender').value,
+    plan: document.getElementById('f-plan').value,
+    status: document.getElementById('f-status').value,
+    joined: document.getElementById('f-joined').value,
+    notes: document.getElementById('f-notes').value.trim()
+  };
+  if (editingId) {
+    const idx = members.findIndex(m=>m.id===editingId);
+    members[idx] = {...members[idx], ...data};
+    showToast('Member updated successfully');
+  } else {
+    members.unshift({id: nextId++, ...data});
+    page = 1;
+    showToast('Member added successfully');
+  }
+  closeModal(); render();
+}
+
+function viewMember(id) {
+  const m = members.find(x=>x.id===id);
+  const col = getColor(m.name);
+  document.getElementById('modal-container').innerHTML = `
+    <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+      <div class="modal">
+        <div class="modal-header"><h3>Member profile</h3><button class="btn-icon" onclick="closeModal()"><i class="ti ti-x" aria-hidden="true"></i></button></div>
+        <div class="modal-body">
+          <div style="display:flex;align-items:center;gap:14px;padding-bottom:14px;border-bottom:0.5px solid var(--color-border-tertiary)">
+            <div class="avatar" style="width:52px;height:52px;font-size:16px;background:${col}22;color:${col}">${initials(m.name)}</div>
+            <div>
+              <div style="font-size:16px;font-weight:500">${m.name}</div>
+              <div style="font-size:13px;color:var(--color-text-secondary)">${m.email}</div>
+              <div style="margin-top:6px;display:flex;gap:6px">
+                <span class="badge ${m.status.toLowerCase()}">${m.status}</span>
+                <span class="plan-badge ${m.plan.toLowerCase()}">${m.plan}</span>
+              </div>
+            </div>
+          </div>
+          <table style="width:100%;font-size:13px;margin-top:4px">
+            ${[['Phone',m.phone],['Age',m.age+' years'],['Gender',m.gender],['Joined',m.joined],['Notes',m.notes||'—']].map(([k,v])=>`
+            <tr><td style="color:var(--color-text-secondary);padding:7px 0;width:100px">${k}</td><td style="padding:7px 0">${v}</td></tr>`).join('')}
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-cancel" onclick="closeModal()">Close</button>
+          <button class="btn-save" onclick="closeModal();openEdit(${m.id})"><i class="ti ti-edit" style="font-size:14px;vertical-align:-1px;margin-right:4px" aria-hidden="true"></i>Edit</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function confirmDelete(id) {
+  const m = members.find(x=>x.id===id);
+  document.getElementById('modal-container').innerHTML = `
+    <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+      <div class="confirm-modal">
+        <h3>Delete member</h3>
+        <p>Are you sure you want to remove <strong>${m.name}</strong>? This action cannot be undone.</p>
+        <div style="display:flex;justify-content:flex-end;gap:10px">
+          <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+          <button class="btn-delete-confirm" onclick="deleteMember(${id})">Delete</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function deleteMember(id) {
+  const m = members.find(x=>x.id===id);
+  members = members.filter(x=>x.id!==id);
+  closeModal(); render();
+  showToast(`${m.name} removed`, 'danger');
+}
+
+render();
+</script>

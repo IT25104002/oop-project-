@@ -1,0 +1,21 @@
+========================================
+  STARTING GYM MANAGEMENT SYSTEM (FIXED)
+========================================
+
+Preparing Environment...
+Compiling for Compatibility (Java 8 mode)...
+Compiling C:\Users\Tharu\oop-project-2026\src\main\java\com\fitnaze\demo\AdminAuthServlet.java
+Compiling C:\Users\Tharu\oop-project-2026\src\main\java\com\fitnaze\demo\Booking.java
+Compiling C:\Users\Tharu\oop-project-2026\src\main\java\com\fitnaze\demo\DietPlan.java
+Compiling C:\Users\Tharu\oop-project-2026\src\main\java\com\fitnaze\demo\FeedbackController.java
+Compiling C:\Users\Tharu\oop-project-2026\src\main\java\com\fitnaze\demo\Filehandler.java
+Compiling C:\Users\Tharu\oop-project-2026\src\main\java\com\fitnaze\demo\GymBackendApplication (1).java
+Compiling C:\Users\Tharu\oop-project-2026\src\main\java\com\fitnaze\demo\GymController.java
+Compiling C:\Users\Tharu\oop-project-2026\src\main\java\com\fitnaze\demo\GymLogic.java
+Compiling C:\Users\Tharu\oop-project-2026\src\main\java\com\fitnaze\demo\GymService.java
+Compiling C:\Users\Tharu\oop-project-2026\src\main\java\com\fitnaze\demo\GymSystemApplication.java
+Compiling C:\Users\Tharu\oop-project-2026\src\main\java\com\fitnaze\demo\Member.java
+Compiling C:\Users\Tharu\oop-project-2026\src\main\java\com\fitnaze\demo\Payment.java
+Compiling C:\Users\Tharu\oop-project-2026\src\main\java\com\fitnaze\demo\PaymentController.java
+Compiling C:\Users\Tharu\oop-project-2026\src\main\java\com\fitnaze\demo\Schedule.java
+Compiling C:\Users\Tharu\oop-project-2026\src\main\java\com\fitnaze\demo\ServletInitializer.java
