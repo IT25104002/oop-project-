@@ -1,4 +1,4 @@
-package com.fitnaze.demo;
+package com.gym.gym_backend;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
