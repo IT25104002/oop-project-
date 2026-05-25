@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.io.*, java.util.*" %>
 <%
-    // --- SAFE INTEGRATION POINT: LOCAL FILE PATH ---
+    // SAFE INTEGRATION POINT: LOCAL FILE PATH
     String baseDir = application.getRealPath("/");
     File dataDir = new File(baseDir + "webappdata");
     File scheduleFile = new File(dataDir, "schedule.txt");
